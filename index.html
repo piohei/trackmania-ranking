@@ -1,1 +1,26 @@
-<h1>test</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My HTML Page</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <h1>Welcome to my page!</h1>
+    <p>This is a paragraph of text.</p>
+    <ul>
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+    </ul>
+
+    <script>
+      $.get( "https://seytaek.com/seasons/active/0f3cb58e-d8e9-4f83-85ab-af7cad01cbb2", function( data ) {
+        console.log(data);
+        alert( "Load was performed." );
+      });
+    </script>
+
+  </body>
+</html>
