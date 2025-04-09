@@ -60,6 +60,7 @@ user_id_to_name.keys.each { |user_id| html_part += "<th>" + user_id_to_name[user
 html_part += "</thead>\n<tbody>\n"
 
 res.keys.sort.each { |map_id|
+  html_part += "<tr>"
   html_part += "<td>" + map_id + "</td>\n"
   html_part += "<td>" + res[map_id][:times][:author] + "</td>\n"
   html_part += "<td>" + res[map_id][:times][:gold] + "</td>\n"
@@ -67,6 +68,7 @@ res.keys.sort.each { |map_id|
   html_part += "<td>" + res[map_id][:times][:bronze] + "</td>\n"
 
   user_id_to_name.keys.each { |user_id| html_part += "<td>" + res[map_id][:times][:personal][user_id] + "</td>\n" }
+  html_part += "</tr>"
 }
 
 html_part += "</tbody>\n</table>\n"
