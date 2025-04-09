@@ -26,12 +26,25 @@ def get_data(res, user_id)
     res[map_name] = res[map_name] || {}
     res[map_name][:times] = res[map_name][:times] || {}
     res[map_name][:times][:personal] = res[map_name][:times][:personal] || {}
+    res[map_name][:times][:medal] = res[map_name][:times][:medal] || {}
 
     res[map_name][:times][:author] = map_time_author.strip
     res[map_name][:times][:gold] = map_time_gold.strip
     res[map_name][:times][:silver] = map_time_silver.strip
     res[map_name][:times][:bronze] = map_time_bronze.strip
     res[map_name][:times][:personal][user_id] = map_time_personal.strip
+
+    if map.attr("class").include?("author")
+      res[map_name][:times][:medal][user_id] = "author"
+    elsif map.attr("class").include?("gold")
+      res[map_name][:times][:medal][user_id] = "gold"
+    elsif map.attr("class").include?("silver")
+      res[map_name][:times][:medal][user_id] = "silver"
+    elsif map.attr("class").include?("bronze")
+      res[map_name][:times][:medal][user_id] = "bronze"
+    else
+      res[map_name][:times][:medal][user_id] = "none"
+    end
   }
 end
 
@@ -67,7 +80,7 @@ res.keys.sort.each { |map_id|
   html_part += "<td>" + res[map_id][:times][:silver] + "</td>\n"
   html_part += "<td>" + res[map_id][:times][:bronze] + "</td>\n"
 
-  user_id_to_name.keys.each { |user_id| html_part += "<td>" + res[map_id][:times][:personal][user_id] + "</td>\n" }
+  user_id_to_name.keys.each { |user_id| html_part += "<td>" + res[map_id][:times][:personal][user_id] + " (" + res[map_id][:times][:medal][user_id] + ")</td>\n" }
   html_part += "</tr>"
 }
 
