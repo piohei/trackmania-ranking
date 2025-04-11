@@ -1,30 +1,44 @@
-name: Update website
+name: Deploy website
 
 on:
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
+  contents: read
+  pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  update:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.3'
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-        working-directory: './generator'
-    - run: |
-        cd generator
-        bundle exec ruby run.rb > ../static-html/index.html
-    - name: Commit website
-      run: |
-        git config --global user.name 'Piotr Heilman'
-        git config --global user.email 'piohei@users.noreply.github.com'
-        git add static-html/
-        git commit -m "Updated website"
-        git push
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          working-directory: './generator'
+      - run: |
+          mkdir static-html
+          cd generator
+          bundle exec ruby run.rb > ../static-html/index.html
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: './static-html/'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
