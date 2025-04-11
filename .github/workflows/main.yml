@@ -1,0 +1,21 @@
+name: Update website
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: 'cd generator'
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - run: 'ruby run.rb > ../index.html'
+    - name: Commit website
+      run: |
+        git config --global user.name 'Piotr Heilman'
+        git config --global user.email 'piohei@users.noreply.github.com'
+        git add index.html
+        git commit -m "Updated website"
+        git push
