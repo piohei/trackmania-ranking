@@ -18,7 +18,9 @@ jobs:
         ruby-version: '3.3'
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         working-directory: './generator'
-    - run: 'ruby generator/run.rb > index.html'
+    - run: |
+        cd generator
+        bundle exec ruby run.rb > ../index.html
     - name: Commit website
       run: |
         git config --global user.name 'Piotr Heilman'
