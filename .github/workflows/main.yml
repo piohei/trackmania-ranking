@@ -1,6 +1,11 @@
 name: Deploy website
 
 on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 22 * * *'
+    - cron:  '0 19 * * *'
+    - cron:  '0 16 * * *'
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
