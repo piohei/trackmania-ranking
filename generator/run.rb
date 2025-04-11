@@ -52,6 +52,7 @@ end
 user_id_to_name = {
   "0f3cb58e-d8e9-4f83-85ab-af7cad01cbb2": "TheBaniaq",
   "b7ac2724-b9f4-4649-82d6-fe85d0d68c67": "maveron58",
+  "cddbf4bd-da7c-4231-ad1e-cbd76cfe0da4": "Johnnyificati"
 }
 
 res = {}
@@ -81,7 +82,26 @@ res.keys.sort.each { |map_id|
   html_part += "<td>" + res[map_id][:times][:silver] + "</td>\n"
   html_part += "<td>" + res[map_id][:times][:bronze] + "</td>\n"
 
-  user_id_to_name.keys.each { |user_id| html_part += "<td>" + res[map_id][:times][:personal][user_id] + " (" + res[map_id][:times][:medal][user_id] + ")</td>\n" }
+  best_user = res[map_id][:times][:personal].select { |k, v| !v.include?("No time set") }.min { |u1, u2| u1[1] <=> u2[1] }
+
+  user_id_to_name.keys.each { |user_id|
+    td_class = best_user && best_user[0] == user_id ? " class=\"table-success\"" : ""
+
+    medal_image = case res[map_id][:times][:medal][user_id]
+    when "author"
+      "<img src=\"https://seytaek.com/img/assets/medal_author.webp\" height=\"25px\" width=\"25px\" alt=\"author\" />"
+    when "gold"
+      "<img src=\"https://seytaek.com/img/assets/medal_gold.webp\" height=\"25px\" width=\"25px\" alt=\"gold\" />"
+    when "silver"
+      "<img src=\"https://seytaek.com/img/assets/medal_silver.webp\" height=\"25px\" width=\"25px\" alt=\"silver\" />"
+    when "bronze"
+      "<img src=\"https://seytaek.com/img/assets/medal_bronze.webp\" height=\"25px\" width=\"25px\" alt=\"bronze\" />"
+    else
+      ""
+    end
+
+    html_part += "<td" + td_class + ">" + res[map_id][:times][:personal][user_id] + " " + medal_image + "</td>\n"
+  }
   html_part += "</tr>"
 }
 
