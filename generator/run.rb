@@ -1,5 +1,6 @@
 require 'net/http'
 require 'nokogiri'
+require 'securerandom'
 
 def parse_website(url)
   uri = URI(url)
@@ -84,6 +85,8 @@ res.keys.sort.each { |map_id|
   html_part += "</tr>"
 }
 
+random_hex = SecureRandom.hex(32)
+
 html_part += "</tbody>\n</table>\n"
 
 puts """
@@ -97,6 +100,7 @@ puts """
     <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq\" crossorigin=\"anonymous\"></script>
   </head>
   <body>
+    <!-- #{random_hex} -->
     <h1>Ranking</h1>
 """
 puts html_part
